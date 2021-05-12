@@ -1,0 +1,73 @@
+.kuwo {
+    background-color: aquamarine;
+font-size: 18px;
+    .song {
+        text-align: center;
+        padding-top: 70px;
+
+        .name {
+            margin: 0 auto ;
+            line-height: 20px;
+            font-size: 1.5em;
+            font-weight: 600px;
+        }
+
+        .artist {
+            line-height: 3.3em;
+            font-size:1em;
+            margin: 0 auto;
+            font-weight: 400;
+            color: hsla(0, 0%, 100%, .8);
+        }
+    }
+
+    .wrap {
+        padding-top: 25px;
+
+        .rotate {
+            img {
+                width:200px;
+                height: 200px;
+                //border:1px solid red;
+                border-radius: 50%;
+            }
+        }
+
+        .lyric {
+            margin: 10px 0 0 0;
+            height: 60px;
+            overflow: hidden;
+
+            li {
+                height: 30px;
+                //background-color: red;
+                font-size: 20px;
+                line-height: 30px;
+            }
+
+            .select {
+                //background-color: burlywood;
+                color: #fff;
+            }
+        }
+
+    }
+
+    .Progress_body {
+        display: flex;
+        width: 100%;
+        text-align: center;
+        line-height: 32px;
+
+        .start,
+        .end {
+            width: 50px;
+            line-height: 32px;
+        }
+
+        .slider {
+            flex: 1;
+        }
+        
+    }
+}

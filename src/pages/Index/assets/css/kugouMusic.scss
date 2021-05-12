@@ -1,0 +1,127 @@
+.kugou {
+    font-size: 18px;
+    background-color: #FCF6F4;
+    .play {
+        text-align: center;
+    }
+
+    .title {
+        margin-top: 20px;
+        line-height: 42px;
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    .singer {
+        margin: 9px 0;
+        line-height: 14px;
+        color: #666;
+        font-size: 13.8px;
+    }
+
+    .cover {
+        width: 244px;
+        height: 244px;
+        margin: 0 auto;
+        border-radius: 50%;
+        background-image: url('https://imgessl.kugou.com/stdmusic/400/20171221/20171221090821129644.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .lrc p {
+        color: #0090FF;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotateZ(0deg);
+        }
+
+        100% {
+            transform: rotateZ(359deg);
+        }
+    }
+
+    .lrc {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .lyric {
+        margin: 0 auto;
+        height: 56px;
+        width: 414px;
+        overflow: hidden;
+    }
+
+    .lyric p {
+        height: 28px;
+        line-height: 28px;
+        font-size: 16px;
+    }
+
+    .lrc>p {
+        margin: 28px 0 23px;
+        color: rgba(102, 102, 102, 0.6);
+        font-size: 12px;
+    }
+
+    .down {
+        margin-bottom: 50px;
+        text-align: center;
+    }
+
+    .down1 {
+        display: inline-block;
+        width: 140px;
+        height: 40px;
+        border: 1px rgba(74, 183, 252, 1) solid;
+        border-radius: 25px;
+        color: rgba(74, 183, 252, 1);
+        line-height: 40px;
+    }
+
+    .down1:hover {
+        background-color: rgba(74, 183, 252, 1);
+        color: #fff;
+    }
+
+    .similar {
+        margin-left: 18px;
+    }
+
+    li {
+        height: 70px;
+        margin-top: 15px;
+
+    }
+
+    li div {
+        float: left;
+    }
+
+    .default {
+        width: 70px;
+        height: 70px;
+        margin-right: 12px;
+        border-radius: 7px;
+        background-image: url('https://imgessl.kugou.com/stdmusic/120/20161202/20161202030338962629.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .text p:nth-child(1) {
+        margin: 9px 0;
+        font-size: 17px;
+    }
+
+    .text p:nth-child(2) {
+        margin: 7px 0;
+        color: rgb(136, 136, 136);
+        ;
+        font-size: 13px;
+    }
+}
