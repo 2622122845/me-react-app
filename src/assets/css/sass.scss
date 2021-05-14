@@ -470,32 +470,83 @@ ul {
   }
 
   .comment {
-    background-color: rgb(240,240,240);
+    background-color: rgb(240, 240, 240);
     margin-bottom: 20px;
     border-radius: 2px;
 
     article {
       background-color: #FFF;
-      padding: 30px ;
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-      &>div {
+      margin-bottom: 20px;
+
+      .body {
+        padding: 25px;
+        padding-bottom: 10px;
+
         .content {
-          font-weight: 500;
-          font-size: 18px;
+          .ant-input[disabled] {
+            font-weight: 500;
+            font-size: 18px;
+            color: black;
+          }
+          .ant-input {
+            font-weight: 500;
+            font-size: 18px;
+            color: rgb(228, 18, 18);
+          }
         }
 
         .source {
           margin-top: 15px;
+          .ant-input {
           text-align: right;
+          }
 
-          span.auther {
+          TextArea {
+            display: inline-block;
             color: #5fa5fe;
             font-size: 14px;
           }
         }
       }
+
+      .footer {
+        display: flex;
+        width: 100%;
+        border-top: 1px solid rgb(206, 206, 206);
+        border-bottom: 1px solid rgb(206, 206, 206);
+
+        &>div {
+          flex: 1;
+        }
+
+        &>div>button {
+          width: 100%;
+        }
+
+        .delete {
+          border-left: 1px solid rgb(206, 206, 206);
+          box-sizing: border-box;
+        }
+
+        .save {
+          border-left: 1px solid rgb(206, 206, 206);
+          box-sizing: border-box;
+        }
+      }
     }
+
+    .uploading {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+
+      &>button {
+        margin-top: 5px;
+        width: 50px;
+        height: 50px;
+      }
+    }
+
   }
-  
+
 }
