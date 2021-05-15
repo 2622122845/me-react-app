@@ -54,7 +54,7 @@ export default class Comment extends React.Component {
                     isBordered: false,
                     isDisabled: true
                 }
-            }], 
+            }],
             loveAccostCommentData: [{
                 data: {
                     auther: "初始化数据",
@@ -67,20 +67,72 @@ export default class Comment extends React.Component {
                     isDisabled: true
                 }
             }],
-
+            foXi: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+            gaoLing: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+            wangYiYun: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+            liZhi: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+            meiWen: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
         }
 
     }
 
     componentDidMount() {
-        /* 获取本地数据 */
         this.ajax()
-        /* 获取网路数据 */
-        /*setTimeout(() => {
-                    this.setState({
-                        commentData: this.addState(commentData),
-                    })
-                });*/
     }
     addState(obj) {
         let data = obj
@@ -183,6 +235,7 @@ export default class Comment extends React.Component {
         http.onreadystatechange = function () {
             if (http.readyState == 4 && http.status == 200) {
                 t.setState({ commentData: t.addState(JSON.parse(http.responseText)) })
+                message.success('获取数据成功');
             }
         }
         http.send()
@@ -208,7 +261,7 @@ export default class Comment extends React.Component {
                         <div className="source">
                             <TextArea
                                 defaultValue={item.data.auther}
-                                placeholder="作者/出自哪里"
+                                placeholder="作者/出自哪里/提供人"
                                 autoSize
                                 bordered={item.state.isBordered}
                                 disabled={item.state.isDisabled}
@@ -259,7 +312,7 @@ export default class Comment extends React.Component {
                     this.local()
                 }
                 <div className="uploading">
-                    <Dropdown overlay={this.menu.bind(this)} placement="topCenter" arrow trigger={['click','hover']} >
+                    <Dropdown overlay={this.menu.bind(this)} placement="topCenter" arrow trigger={['click', 'hover']} >
                         <Button type="primary" shape="circle">
                             功能
                         </Button>
