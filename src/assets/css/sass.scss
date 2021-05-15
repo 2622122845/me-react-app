@@ -541,7 +541,6 @@ ul {
       position: fixed;
       bottom: 40px;
       right: 40px;
-
       &>button {
         margin-top: 5px;
         width: 50px;
@@ -558,6 +557,7 @@ ul {
       background-color: rgba(0, 0, 0, 0.308);
 
       .box {
+        position: fixed;
         margin: 20% 10% 0;
         background-color: #FFF;
         text-align: center;
@@ -577,7 +577,6 @@ ul {
 
         .body {
           padding: 18px;
-
           .btn {
             display: flex;
             justify-content: space-around;

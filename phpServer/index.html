@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台数据添加</title>
+    <link rel="stylesheet" href="./H-ui.min.css">
+    <script type="text/javascript" src="./H-ui.min.js"></script>
+    <style>
+        #btn {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+
+        #btn>button {
+            width: 45%;
+            font-size: 18px;
+            height: 42px;
+        }
+
+        input {
+            width: 100%;
+            height: 40px;
+        }
+
+        select {
+            width: 100%;
+            height: 40px;
+            background-color: #fff;
+            margin-bottom: 18px;
+        }
+
+        #auther {
+            margin-bottom: 18px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 18px;
+        }
+
+        .title {
+            text-align: center;
+            margin: 40px 0;
+            font-weight: bold;
+            font-size: 42px;
+            color: rgb(150, 144, 144);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        后台数据添加
+    </div>
+    <select id="type">
+        <option value="wzryCommentData">王者荣耀</option>
+        <option value="yxlmCommentData">英雄联盟</option>
+        <option value="loveAccostCommentData">恋爱话术</option>
+        <option value="loveDocumentsCommentData">恋爱文案</option>
+        <option value="loveTheoryCommentData">恋爱理论</option>
+    </select>
+    <input type="text" id='auther' placeholder="作者/来自哪里" />
+    <textarea id='content' placeholder="内容/话术"></textarea>
+    <div id="btn">
+        <button id='submit' class="btn btn-success radius">提交</button>
+        <button id='go' class="btn btn-success radius">前往官网</button>
+    </div>
+
+    <script>
+
+        document.querySelector('#submit').onclick = function () {
+            let date = new Date()
+            let ajax = new XMLHttpRequest()
+            ajax.open('get', `./server.php?
+        content=${unescape(document.querySelector('#content').value)}&
+        auther=${unescape(document.querySelector('#auther').value)}& 
+        filename=${unescape(document.querySelector('#type').value)}&
+        date=${date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}&
+        type=add
+        `)
+            ajax.onreadystatechange = function () {
+                if (ajax.status == 200 && ajax.readyState == 4) {
+                    alert(ajax.responseText);
+                    console.log(JSON.parse(ajax.responseText));
+                }
+            }
+            ajax.send()
+        }
+        document.querySelector('#go').onclick = function () {
+            window.location.href = 'http://host105094139.s746.pppf.com.cn/build/#/index'
+        }
+    </script>
+</body>
+
+</html>

@@ -259,7 +259,7 @@ export default class Comment extends React.Component {
                     this.local()
                 }
                 <div className="uploading">
-                    <Dropdown overlay={this.menu.bind(this)} placement="topCenter" arrow >
+                    <Dropdown overlay={this.menu.bind(this)} placement="topCenter" arrow trigger={['click','hover']} >
                         <Button type="primary" shape="circle">
                             功能
                         </Button>
