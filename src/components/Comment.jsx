@@ -1,91 +1,205 @@
 import React from 'react'
-import { Menu, Dropdown, Button, Input} from 'antd';
-import commentData from '../assets/data/comment.json'
+import { Menu, Dropdown, Button, Input, message } from 'antd';
 const { TextArea } = Input;
 export default class Comment extends React.Component {
     state = {
-        commentData: `{
-            "yxlmCommentData": [{
-                "data": {
-                    "auther": "wary",
-                    "content": "wary",
-                    "date": "2021-4-11",
-                    "id": 0
+        http: 'http://host105094139.s746.pppf.com.cn/newServer/server.php',
+        //http: 'http://www.phpserver.com/new/server.php',
+        alertShow: false,
+        commentData: {
+            yxlmCommentData: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
                 },
-                "state": {
-                    "isBordered": false,
-                    "isDisabled": true
+                state: {
+                    isBordered: false,
+                    isDisabled: true
                 }
             }],
-            "wzryCommentData": [{
-                "data": {
-                    "auther": "0",
-                    "content": "wary",
-                    "date": "2021-4-11",
-                    "id": 0
+            wzryCommentData: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
                 },
-                "state": {
-                    "isBordered": false,
-                    "isDisabled": true
+                state: {
+                    isBordered: false,
+                    isDisabled: true
                 }
-        
-            }]
-        }`
+            }],
+            loveTheoryCommentData: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+            loveDocumentsCommentData: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }], 
+            loveAccostCommentData: [{
+                data: {
+                    auther: "初始化数据",
+                    content: "初始化数据",
+                    date: "初始化数据",
+                    id: "0"
+                },
+                state: {
+                    isBordered: false,
+                    isDisabled: true
+                }
+            }],
+
+        }
 
     }
 
     componentDidMount() {
         /* 获取本地数据 */
-        // this.ajax(this.props.type)
+        this.ajax()
         /* 获取网路数据 */
-        setTimeout(() => {
-            this.setState({
-                commentData: JSON.stringify(commentData),
+        /*setTimeout(() => {
+                    this.setState({
+                        commentData: this.addState(commentData),
+                    })
+                });*/
+    }
+    addState(obj) {
+        let data = obj
+        for (let key in data) {
+            data[key].forEach((item, index) => {
+                item.data.id = `'${index}'`
+                item.state = {
+                    isBordered: false,
+                    isDisabled: true
+                }
             })
-        });
+        }
+        return data;
+    }
+    myAlert() {
+        if (this.state.alertShow) {
+            return <div className="alert" >
+                <div className="box">
+                    <div className="alert-header">
+                        <p>数据添加</p>
+                    </div>
+                    <div className="body" >
+                        <div>
+                            <Input placeholder="作者/出自哪里" allowClear id='alert-input' />
+                            <TextArea
+                                placeholder="内容"
+                                autoSize
+                                id='alert-TextArea'
+                            />
+                        </div>
+                        <div className='btn'>
+                            <Button type="primary" onClick={() => {
+                                let input = document.querySelector('#alert-input').value
+                                let textArea = document.querySelector('#alert-TextArea').value
+                                let newData = JSON.parse(JSON.stringify(this.state.commentData))
+                                let date = new Date()
+                                newData[this.props.type].push({
+                                    data: {
+                                        auther: input,
+                                        content: textArea,
+                                        date: `${date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}`,
+                                    }
+                                })
+                                this.setState({ commentData: this.addState(newData) })
+                            }} >
+                                确定
+            </Button>
+                            <Button type="primary" onClick={() => {
+                                this.setState({ alertShow: false })
+                            }}>
+                                取消
+            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     }
     menu() {
         return (
-            <Menu>
+            <Menu id='antd-menu'>
                 <Menu.Item>
-                    <Button>
-                        新增
+                    <Button onClick={() => {
+                        console.log(this)
+                        this.setState({ alertShow: true })
+                        //this.state.commentData[this.props.type].push()
+                    }}>
+                        新增数据
+                    </Button>
+                </Menu.Item>
+                <Menu.Item>
+                    <Button onClick={() => {
+                        let ajax = new XMLHttpRequest()
+                        ajax.open('get',
+                            `${this.state.http}?type=create&data=${JSON.stringify(this.state.commentData)}`);
+                        ajax.send()
+                        ajax.onreadystatechange = () => {
+                            if (ajax.status == 200 && ajax.readyState == 4) {
+                                message.success(ajax.responseText);
+                            }
+                        }
+                    }}>
+                        上传内容
             </Button>
                 </Menu.Item>
                 <Menu.Item>
-                    <Button>
-                        上传
-            </Button>
+                    <Button onClick={() => {
+                        window.location.href = 'http://wpa.qq.com/msgrd?v=3&uin=2622122845&site=qq&menu=yes'
+                    }}>
+                        联系作者
+                    </Button>
                 </Menu.Item>
             </Menu>
         )
     }
-    ajax(string) {
+    ajax() {
         let t = this;
         let http = new XMLHttpRequest()
-        http.open('get', `http://host105094139.s746.pppf.com.cn/my-react-app/js/${string}.txt`)
+        http.open('get', `${this.state.http}?type=read`);
         http.onreadystatechange = function () {
             if (http.readyState == 4 && http.status == 200) {
-                //console.log(typeof http.responseText,JSON.parse(http.responseText), t)
-                t.setState({ component: t.renderComponent(JSON.parse(http.responseText)) })
+                t.setState({ commentData: t.addState(JSON.parse(http.responseText)) })
             }
         }
         http.send()
     }
 
     local() {
-        return this.renderComponent(JSON.parse(this.state.commentData)[this.props.type])
+        return this.renderComponent(this.state.commentData[this.props.type])
     }
     renderComponent(obj) {
-        console.log(obj,JSON.parse(this.state.commentData))
         return obj.map((item, index) => {
-            return <article key={item.data.auther}>
+            return <article key={item.data.id}>
                 <div className="body">
                     <div>
                         <div className='content'>
                             <TextArea
                                 defaultValue={item.data.content}
-                                placeholder="Autosize height with minimum and maximum number of lines"
+                                placeholder="内容"
                                 autoSize
                                 bordered={item.state.isBordered}
                                 disabled={item.state.isDisabled}
@@ -94,7 +208,7 @@ export default class Comment extends React.Component {
                         <div className="source">
                             <TextArea
                                 defaultValue={item.data.auther}
-                                placeholder="Autosize height with minimum and maximum number of lines"
+                                placeholder="作者/出自哪里"
                                 autoSize
                                 bordered={item.state.isBordered}
                                 disabled={item.state.isDisabled}
@@ -106,26 +220,31 @@ export default class Comment extends React.Component {
                     <div className='update'>
                         <Button type="text" onClick={
                             () => {
-                                let newTextArea = JSON.parse(this.state.commentData)
+                                let newTextArea = this.state.commentData
                                 newTextArea[this.props.type][index].state.isDisabled = false;
                                 newTextArea[this.props.type][index].state.isBordered = true;
-                                this.setState({ commentData: JSON.stringify(newTextArea) })
+                                this.setState({ commentData: newTextArea })
                             }
                         }>修改</Button>
                     </div>
                     <div className='save'>
-                        <Button type="text"  onClick={() => {
-                            let newTextArea = JSON.parse(this.state.commentData)
+                        <Button type="text" onClick={() => {
+                            let newTextArea = this.state.commentData
                             newTextArea[this.props.type][index].state.isDisabled = true;
                             newTextArea[this.props.type][index].state.isBordered = false;
-                            this.setState({ commentData: JSON.stringify(newTextArea) })
+                            let comment = document.querySelector('.comment')
+                            let source = comment.querySelectorAll('article')[index].querySelector('.source textarea').value
+                            let content = comment.querySelectorAll('article')[index].querySelector('.content textarea').value
+                            newTextArea[this.props.type][index].data.content = content;
+                            newTextArea[this.props.type][index].data.source = source;
+                            this.setState({ commentData: newTextArea })
                         }}>保存</Button>
                     </div>
                     <div className='delete'>
                         <Button type="text" danger onClick={() => {
-                            let newTextArea = JSON.parse(this.state.commentData)
-                            console.log(newTextArea[this.props.type].splice(index, 1))
-                            this.setState({ commentData: JSON.stringify(newTextArea) })
+                            let newTextArea = this.state.commentData
+                            newTextArea[this.props.type].splice(index, 1)
+                            this.setState({ commentData: newTextArea })
                         }}>删除</Button>
                     </div>
                 </div>
@@ -140,12 +259,15 @@ export default class Comment extends React.Component {
                     this.local()
                 }
                 <div className="uploading">
-                    <Dropdown overlay={this.menu} placement="topCenter" arrow >
+                    <Dropdown overlay={this.menu.bind(this)} placement="topCenter" arrow >
                         <Button type="primary" shape="circle">
                             功能
                         </Button>
                     </Dropdown>
                 </div>
+                {
+                    this.myAlert()
+                }
             </div>
         );
     }
