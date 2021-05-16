@@ -28,14 +28,14 @@ export let appListData = [
         size: '00',
         good: '00',
         icon: 'https://p.ssl.qhimg.com/dmsmty/74_74_100/t0189997ac2445c4ede.png',
-        component: <Comment type='gaoLing' />
+        component: <Comment type='gaoLeng' />
     }, {
         name: '网抑云-感情-舔狗',
         des: '网抑云，是2020年爆发的一种“丧文化”梗。是指网易云音乐，网易云音乐的评论中总是充满了伤感、丧甚至负能量的内容，人称“人均抑郁症”。',
         size: '00',
         good: '00',
         icon: 'https://p1.ssl.qhimg.com/dmsmfl/120_119_/t019d2b9f04108ac6d1.webp?size=1920x1280',
-        component: <Comment typy='wangYiYun' />
+        component: <Comment type='wangYiYun' />
     }, {
         name: '励志-阳光',
         des: 'lì zhì ，意思是奋志，集中心思致力于某种事业。',

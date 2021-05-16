@@ -3,7 +3,7 @@ import { Menu, Dropdown, Button, Input, message } from 'antd';
 const { TextArea } = Input;
 export default class Comment extends React.Component {
     state = {
-        http: 'http://host105094139.s746.pppf.com.cn/newServer/server.php',
+        http: 'http://cfs024zc14.talds.top/new/server.php',
         //http: 'http://www.phpserver.com/new/server.php',
         alertShow: false,
         commentData: {
@@ -79,7 +79,7 @@ export default class Comment extends React.Component {
                     isDisabled: true
                 }
             }],
-            gaoLing: [{
+            gaoLeng: [{
                 data: {
                     auther: "初始化数据",
                     content: "初始化数据",
@@ -159,7 +159,7 @@ export default class Comment extends React.Component {
                             <Input placeholder="作者/出自哪里" allowClear id='alert-input' />
                             <TextArea
                                 placeholder="内容"
-                                autoSize
+                                autoSize={{ minRows: 3, maxRows: 10 }}
                                 id='alert-TextArea'
                             />
                         </div>
@@ -205,9 +205,15 @@ export default class Comment extends React.Component {
                 </Menu.Item>
                 <Menu.Item>
                     <Button onClick={() => {
+                        let newData = this.state.commentData
+                        for (let key in newData) {
+                            newData[key].forEach((item) => {
+                                delete item.state;
+                            })
+                        }
                         let ajax = new XMLHttpRequest()
                         ajax.open('get',
-                            `${this.state.http}?type=create&data=${JSON.stringify(this.state.commentData)}`);
+                            `${this.state.http}?type=create&data=${JSON.stringify(newData)}`);
                         ajax.send()
                         ajax.onreadystatechange = () => {
                             if (ajax.status == 200 && ajax.readyState == 4) {
