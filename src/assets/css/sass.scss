@@ -483,6 +483,8 @@ ul {
         padding-bottom: 10px;
 
         .content {
+          margin-bottom: 10px;
+
           .ant-input[disabled] {
             font-weight: 500;
             font-size: 18px;
@@ -497,8 +499,6 @@ ul {
         }
 
         .source {
-          margin-top: 10px;
-
           .ant-input[disabled] {
             text-align: right;
           }
@@ -512,10 +512,12 @@ ul {
 
         .detail {
           display: flex;
+
           //justify-content: center;
           span {
             color: #b3b0aa;
             flex: 1;
+            padding-left: 11px;
           }
         }
       }
@@ -558,7 +560,8 @@ ul {
       }
     }
 
-    .alert {
+    .alert,
+    .confirm {
       position: absolute;
       top: 0;
       right: 0;
@@ -568,6 +571,7 @@ ul {
 
       .box {
         position: fixed;
+        width: 80%;
         margin: 20% 10% 0;
         background-color: #FFF;
         text-align: center;
@@ -575,7 +579,7 @@ ul {
         border-radius: 5px;
         border: 1px solid rgb(202, 202, 202);
 
-        .alert-header {
+        .head {
           line-height: 55px;
           border-bottom: 1px solid rgb(204, 194, 194);
 

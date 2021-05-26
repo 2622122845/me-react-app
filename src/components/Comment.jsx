@@ -1,13 +1,15 @@
 import React from 'react'
-import { Menu, Dropdown, Button, Input, message } from 'antd';
+import { Menu, Dropdown, Button, Input, message, Modal } from 'antd';
 const { TextArea } = Input;
+
 export default class Comment extends React.Component {
     state = {
         //http: 'http://cfs024zc14.talds.top/new/server.php',
         http: 'http://www.phpserver.com/new/server.php',
         alertShow: false,
-        newData: false,
-        commentData: []
+        commentData: [],
+        daily: null,
+        isShowConfirm: false
     }
 
     componentDidMount() {
@@ -19,16 +21,18 @@ export default class Comment extends React.Component {
             item.data.id = `'${index}'`
             item.state = {
                 isBordered: false,
-                isDisabled: true
+                isDisabled: true,
+                isShow: Boolean(item.data.source)
             }
         })
+        data.reverse();
         return data;
     }
     myAlert() {
         if (this.state.alertShow) {
             return <div className="alert" >
                 <div className="box">
-                    <div className="alert-header">
+                    <div className="head">
                         <p>数据添加</p>
                     </div>
                     <div className="body" >
@@ -62,6 +66,53 @@ export default class Comment extends React.Component {
                                 this.setState({ alertShow: false })
                             }}>
                                 取消
+            </Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    showConfirm() {
+        if (this.state.isShowConfirm) {
+            return <div className="confirm" >
+                <div className="box">
+                    <div className="head">
+                        <p>数据添加</p>
+                    </div>
+                    <div className="body" >
+                        <div className='btn'>
+                            <Button type="primary" onClick={() => {
+                                let ajax = new XMLHttpRequest()
+                                ajax.open('get', this.state.http + '?type=read&detail=daily')
+                                ajax.send()
+                                ajax.onreadystatechange = () => {
+                                    if (ajax.status == 200 && ajax.readyState == 4) {
+                                        this.setState({
+                                            commentData: JSON.parse(ajax.responseText).mission,
+                                            isShowConfirm: false
+                                        })
+                                        message.success('读取成功');
+                                    }
+                                }
+                            }} >
+                                查看
+                            </Button>
+                            <Button type="primary" onClick={() => {
+                                let ajax = new XMLHttpRequest()
+                                ajax.open('get', this.state.http + '?type=create&detail=daily&data=' + JSON.stringify(this.state.commentData))
+                                ajax.send()
+                                ajax.onreadystatechange = () => {
+                                    if (ajax.status == 200 && ajax.readyState == 4) {
+                                        this.setState({
+                                            isShowConfirm: false
+                                        })
+                                        message.success(ajax.responseText);
+                                    }
+                                }
+                            }}>
+                                上传
+
             </Button>
                         </div>
                     </div>
@@ -108,6 +159,22 @@ export default class Comment extends React.Component {
                         联系作者
                     </Button>
                 </Menu.Item>
+                <Menu.Item>
+                    {
+                        (() => {
+                            if (this.props.type == 'shiJianGuiHuaJu') {
+                                return (<Button onClick={
+                                    () => {
+                                        this.setState({ isShowConfirm: true })
+                                    }
+                                }>
+                                    时间规划
+                                </Button>)
+                            }
+                        })()
+                    }
+
+                </Menu.Item>
             </Menu>
         )
     }
@@ -143,15 +210,21 @@ export default class Comment extends React.Component {
                                 disabled={item.state.isDisabled}
                             />
                         </div>
-                        <div className="source">
-                            <TextArea
-                                defaultValue={item.data.source}
-                                placeholder="作者/出自哪里/提供人"
-                                autoSize
-                                bordered={item.state.isBordered}
-                                disabled={item.state.isDisabled}
-                            />
-                        </div>
+                        {
+                            (function () {
+                                if (item.state.isShow) {
+                                    return <div className="source">
+                                        <TextArea
+                                            defaultValue={item.data.source}
+                                            placeholder="作者/出自哪里/提供人"
+                                            autoSize
+                                            bordered={item.state.isBordered}
+                                            disabled={item.state.isDisabled}
+                                        />
+                                    </div>
+                                }
+                            })()
+                        }
                         <div className='detail'>
                             <span className='date'>
                                 时间：{item.data.date}
@@ -169,6 +242,7 @@ export default class Comment extends React.Component {
                                 let newTextArea = this.state.commentData
                                 newTextArea[index].state.isDisabled = false;
                                 newTextArea[index].state.isBordered = true;
+                                newTextArea[index].state.isShow = true;
                                 this.setState({ commentData: newTextArea })
                             }
                         }>修改</Button>
@@ -181,6 +255,7 @@ export default class Comment extends React.Component {
                             let comment = document.querySelector('.comment')
                             let source = comment.querySelectorAll('article')[index].querySelector('.source textarea').value
                             let content = comment.querySelectorAll('article')[index].querySelector('.content textarea').value
+                            newTextArea[index].state.isShow = Boolean(source)
                             newTextArea[index].data.content = content;
                             newTextArea[index].data.source = source;
                             this.setState({ commentData: newTextArea })
@@ -213,6 +288,10 @@ export default class Comment extends React.Component {
                 </div>
                 {
                     this.myAlert()
+
+                }
+                {
+                    this.showConfirm()
                 }
             </div>
         );
