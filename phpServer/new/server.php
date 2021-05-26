@@ -1,13 +1,21 @@
 <?php
 header('Access-Control-Allow-Origin:*');
-$content = file_get_contents("data.txt");
+$filePath = "./data.json";
+$content = file_get_contents($filePath);
 $decode = json_decode($content);
 if ($_GET['type'] == 'create') {
     //添加get数据
-    $decode->$_GET['detail'] = json_decode($_GET['data']);
+    switch ($_GET['detail']) {
+        case "daily":
+            $decode->$_GET['detail']->mission = json_decode($_GET['data']);
+            break;
+        default:
+            $decode->$_GET['detail'] = json_decode($_GET['data']);
+            break;
+    }
     //所有数据转字符串
     $string = json_encode($decode);
-    file_put_contents("./data.txt", $string);
+    file_put_contents($filePath, $string);
     echo '存储成功';
 }
 if ($_GET['type'] == 'read') {
