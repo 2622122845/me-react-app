@@ -497,7 +497,7 @@ ul {
         }
 
         .source {
-          margin-top: 15px;
+          margin-top: 10px;
 
           .ant-input[disabled] {
             text-align: right;
@@ -507,6 +507,15 @@ ul {
             display: inline-block;
             color: #5fa5fe;
             font-size: 14px;
+          }
+        }
+
+        .detail {
+          display: flex;
+          //justify-content: center;
+          span {
+            color: #b3b0aa;
+            flex: 1;
           }
         }
       }
@@ -541,6 +550,7 @@ ul {
       position: fixed;
       bottom: 40px;
       right: 40px;
+
       &>button {
         margin-top: 5px;
         width: 50px;
@@ -577,6 +587,7 @@ ul {
 
         .body {
           padding: 18px;
+
           .btn {
             display: flex;
             justify-content: space-around;

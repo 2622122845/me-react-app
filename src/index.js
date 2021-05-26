@@ -68,7 +68,7 @@ class Container extends React.Component {
            changeDrawerState={this.changeDrawerState.bind(this)}
            name={this.state.name}
            />
-           {/* 返回顶部 */}
+           {/* 顶部 */}
           <Scroll />
         </div>
       </div>

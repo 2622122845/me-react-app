@@ -44,6 +44,20 @@ export let appListData = [
         icon: 'https://p.ssl.qhimg.com/dmfd/120_120_80/t016ef77b3f06820d12.webp',
         component: <Comment type='liZhi' />
     }, {
+        name: '时间规划',
+        des: '合理的规划时间会让你事半功倍',
+        size: '00',
+        good: '00',
+        icon: 'https://p.ssl.qhimg.com/dmsmty/74_74_100/t01ac38341d52038863.webp',
+        component: <Comment type='shiJianGuiHuaJu' />
+    }, {
+        name: '英文句子',
+        des: '英文散文、英文美文、英文诗歌、英文演讲、英文娱乐、英文故事、英文科普、英文行业、英文技巧',
+        size: '00',
+        good: '00',
+        icon: 'https://p.ssl.qhimg.com/dmsmty/74_74_100/t01f5f762be24a41560.webp',
+        component: <Comment type='English' />
+    }, {
         name: '美文',
         des: '经典美文_美文欣赏_美文摘抄_美文网',
         size: '00',
