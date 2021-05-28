@@ -7,8 +7,8 @@ export default class Comment extends React.Component {
         //http: 'http://cfs024zc14.talds.top/new/server.php',
         http: 'http://www.phpserver.com/new/server.php',
         alertShow: false,
-        commentData: [],
-        daily: null,
+        displayData: [],
+        sourceData: null,
         isShowConfirm: false
     }
 
@@ -48,9 +48,8 @@ export default class Comment extends React.Component {
                             <Button type="primary" onClick={() => {
                                 let input = document.querySelector('#alert-input').value
                                 let textArea = document.querySelector('#alert-TextArea').value
-                                let newData = JSON.parse(JSON.stringify(this.state.commentData))
+                                let newData = this.state.displayData
                                 let date = new Date()
-                                console.log(newData)
                                 newData.push({
                                     data: {
                                         source: input,
@@ -58,7 +57,10 @@ export default class Comment extends React.Component {
                                         date: `${date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}`,
                                     }
                                 })
-                                this.setState({ commentData: this.addState(newData) })
+                                this.setState({
+                                    displayData: this.addState(newData),
+                                })
+                                message.success('成功添加一条数据')
                             }} >
                                 确定
             </Button>
@@ -78,40 +80,32 @@ export default class Comment extends React.Component {
             return <div className="confirm" >
                 <div className="box">
                     <div className="head">
-                        <p>数据添加</p>
+                        <p>请选择操作</p>
                     </div>
                     <div className="body" >
                         <div className='btn'>
-                            <Button type="primary" onClick={() => {
-                                let ajax = new XMLHttpRequest()
-                                ajax.open('get', this.state.http + '?type=read&detail=daily')
-                                ajax.send()
-                                ajax.onreadystatechange = () => {
-                                    if (ajax.status == 200 && ajax.readyState == 4) {
-                                        this.setState({
-                                            commentData: JSON.parse(ajax.responseText).mission,
-                                            isShowConfirm: false
-                                        })
-                                        message.success('读取成功');
-                                    }
+                            <Button type="primary" onClick={
+                                () => {
+
+                                    this.setState({
+                                        isShowConfirm: false,
+                                        displayData: this.addState(this.state.sourceData.old.daily)
+                                    })
+                                    message.success('以为你展示内容');
                                 }
-                            }} >
+                            } >
                                 查看
                             </Button>
                             <Button type="primary" onClick={() => {
-                                let ajax = new XMLHttpRequest()
-                                ajax.open('get', this.state.http + '?type=create&detail=daily&data=' + JSON.stringify(this.state.commentData))
-                                ajax.send()
-                                ajax.onreadystatechange = () => {
-                                    if (ajax.status == 200 && ajax.readyState == 4) {
-                                        this.setState({
-                                            isShowConfirm: false
-                                        })
-                                        message.success(ajax.responseText);
-                                    }
-                                }
+                                let newData = this.state.sourceData
+                                newData.new = this.state.displayData;
+                                this.setState({
+                                    isShowConfirm: false,
+                                    sourceData: newData
+                                })
+                                message.success('修改成功');
                             }}>
-                                上传
+                                修改
 
             </Button>
                         </div>
@@ -127,18 +121,26 @@ export default class Comment extends React.Component {
                     <Button onClick={() => {
                         console.log(this)
                         this.setState({ alertShow: true })
-                        //this.state.commentData[this.props.type].push()
                     }}>
                         新增数据
                     </Button>
                 </Menu.Item>
                 <Menu.Item>
                     <Button onClick={() => {
-                        let newData = this.state.commentData
-                        newData.forEach((item) => {
-                            delete item.state;
-                        })
-
+                        let newData = this.state.sourceData
+                        switch (this.props.type) {
+                            case 'shiJianGuiHuaJu':
+                                newData.new = this.state.displayData
+                                newData.new.forEach((item) => {
+                                    delete item.state;
+                                })
+                                break;
+                            default:
+                                newData.forEach((item) => {
+                                    delete item.state;
+                                })
+                                break;
+                        }
                         let ajax = new XMLHttpRequest()
                         ajax.open('get',
                             `${this.state.http}?type=create&data=${JSON.stringify(newData)}&detail=${this.props.type}`);
@@ -181,11 +183,35 @@ export default class Comment extends React.Component {
     ajax() {
         let t = this;
         let http = new XMLHttpRequest()
-        http.open('get', `${this.state.http}?type=read&newData=${this.state.newData}&detail=${this.props.type}`);
+        http.open('get', `${this.state.http}?type=read&detail=${this.props.type}`);
         http.onreadystatechange = function () {
             if (http.readyState == 4 && http.status == 200) {
                 //解析数据
-                t.setState({ commentData: t.addState(JSON.parse(http.responseText)) })
+                let txt = JSON.parse(http.responseText)
+                let date = new Date()
+                switch (t.props.type) {
+                    case 'shiJianGuiHuaJu':
+                        if (txt.old.date !== date.getDate()) {
+                            txt.old.date = date.getDate()
+                            let newDaily = txt.old.daily.map(function (item) {
+                                item.data.date = `${date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}`
+                                return item;
+                            })
+                            txt.new.push(...newDaily)
+                        }
+                        t.addState(txt.new);
+                        t.setState({
+                            sourceData: JSON.parse(JSON.stringify(txt)),
+                            displayData: JSON.parse(JSON.stringify(t.addState(txt.new)))
+                        })
+                        break;
+                    default:
+                        t.setState({
+                            sourceData: JSON.parse(JSON.stringify(txt)),
+                            displayData: JSON.parse(JSON.stringify(t.addState(txt)))
+                        })
+                        break;
+                }
                 message.success('获取数据成功');
             }
         }
@@ -193,11 +219,11 @@ export default class Comment extends React.Component {
     }
 
     local() {
-        return this.renderComponent(this.state.commentData)
+
+        return this.renderComponent(this.state.displayData);
     }
     renderComponent(obj) {
         return obj.map((item, index) => {
-            //console.log();
             return <article key={item.data.id}>
                 <div className="body">
                     <div>
@@ -239,33 +265,40 @@ export default class Comment extends React.Component {
                     <div className='update'>
                         <Button type="text" onClick={
                             () => {
-                                let newTextArea = this.state.commentData
+                                let newTextArea = this.state.displayData
                                 newTextArea[index].state.isDisabled = false;
                                 newTextArea[index].state.isBordered = true;
                                 newTextArea[index].state.isShow = true;
-                                this.setState({ commentData: newTextArea })
-                            }
-                        }>修改</Button>
+                                this.setState({
+                                    displayData: newTextArea
+                                })
+                            }}>修改</Button>
                     </div>
                     <div className='save'>
                         <Button type="text" onClick={() => {
-                            let newTextArea = this.state.commentData
-                            newTextArea[index].state.isDisabled = true;
-                            newTextArea[index].state.isBordered = false;
-                            let comment = document.querySelector('.comment')
-                            let source = comment.querySelectorAll('article')[index].querySelector('.source textarea').value
-                            let content = comment.querySelectorAll('article')[index].querySelector('.content textarea').value
-                            newTextArea[index].state.isShow = Boolean(source)
-                            newTextArea[index].data.content = content;
-                            newTextArea[index].data.source = source;
-                            this.setState({ commentData: newTextArea })
+                            let newTextArea = this.state.displayData
+                            if (newTextArea[index].state.isDisabled !== true && newTextArea[index].state.isBordered !== false) {
+                                newTextArea[index].state.isDisabled = true;
+                                newTextArea[index].state.isBordered = false;
+                                let comment = document.querySelector('.comment')
+                                let source = comment.querySelectorAll('article')[index].querySelector('.source textarea').value
+                                let content = comment.querySelectorAll('article')[index].querySelector('.content textarea').value
+                                newTextArea[index].state.isShow = Boolean(source)
+                                newTextArea[index].data.content = content;
+                                newTextArea[index].data.source = source;
+                                this.setState({
+                                    displayData: newTextArea,
+                                })
+                            }
                         }}>保存</Button>
                     </div>
                     <div className='delete'>
                         <Button type="text" danger onClick={() => {
-                            let newTextArea = this.state.commentData
+                            let newTextArea = this.state.displayData;
                             newTextArea.splice(index, 1)
-                            this.setState({ commentData: newTextArea })
+                            this.setState({
+                                displayData: newTextArea,
+                            })
                         }}>删除</Button>
                     </div>
                 </div>
