@@ -12,7 +12,7 @@ import { appListData } from './assets/js/app-list-data.js'
 
 export default class Index extends React.Component {
     render() {
-        console.log('我是Index', this, Object.assign({}, this.props));
+        console.log('我是Index', this);
         return (
             <div>
                 <MyCarousel data={carouselListData} />

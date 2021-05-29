@@ -1,4 +1,6 @@
 import React from 'react'
+import store from '../radux/store.js'
+
 export default class NavO extends React.Component {
     render() {
         console.log('我是NavO', this)
@@ -7,7 +9,14 @@ export default class NavO extends React.Component {
             arr.push(
                 <li key={index}>
                     <div onClick={() => {
-                        return this.props.changeDrawerState(item.describe, item.component)
+                         store.dispatch({
+                            type: 'changeDrawerState',
+                            data: {
+                                component:item.component,
+                                name:item.describe,
+                                shouDrawer:true
+                            }
+                        })
                     }}>
                         <span>
                             <img src={item.img} alt="" />

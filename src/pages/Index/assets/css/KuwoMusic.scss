@@ -1,20 +1,19 @@
-.kuwo {
+#kuwo {
     background-color: aquamarine;
-font-size: 18px;
+    font-size: 18px;
+
     .song {
         text-align: center;
-        padding-top: 70px;
+        padding-top: 60px;
 
         .name {
-            margin: 0 auto ;
-            line-height: 20px;
-            font-size: 1.5em;
+            margin: 0 auto;
+            font-size: 1.3em;
             font-weight: 600px;
         }
 
         .artist {
-            line-height: 3.3em;
-            font-size:1em;
+            font-size: 1em;
             margin: 0 auto;
             font-weight: 400;
             color: hsla(0, 0%, 100%, .8);
@@ -26,7 +25,7 @@ font-size: 18px;
 
         .rotate {
             img {
-                width:200px;
+                width: 200px;
                 height: 200px;
                 //border:1px solid red;
                 border-radius: 50%;
@@ -34,7 +33,7 @@ font-size: 18px;
         }
 
         .lyric {
-            margin: 10px 0 0 0;
+            margin: 15px 0 0 0;
             height: 60px;
             overflow: hidden;
 
@@ -58,6 +57,7 @@ font-size: 18px;
         width: 100%;
         text-align: center;
         line-height: 32px;
+        margin: 10px 0;
 
         .start,
         .end {
@@ -68,6 +68,24 @@ font-size: 18px;
         .slider {
             flex: 1;
         }
-        
+
+    }
+
+    .download {
+        text-align: center;
+        height: 48px;
+        margin-bottom: 20px;
+
+        .ant-btn-round {
+            height: 48px;
+            padding: 4px 100px;
+        }
+    }
+
+    .nav-title {
+        padding-left: 20px;
+        font-size: 1.4em;
+        font-weight: 500;
+        color: #fff;
     }
 }

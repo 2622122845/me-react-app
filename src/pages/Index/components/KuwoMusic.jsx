@@ -1,6 +1,10 @@
 import React from 'react'
 import '../assets/css/KuwoMusic.scss'
-import { Slider } from 'antd';
+import { Slider, Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import Card from '../../../components/Card'
+import { appListData } from '../assets/js/kuwo/list-data.js'
+
 export default class KugouMusic extends React.Component {
     state = {
         inputValue: 0
@@ -8,12 +12,14 @@ export default class KugouMusic extends React.Component {
     onChange = value => {
         this.setState({
             inputValue: value,
+            size: 'large'
         });
     };
 
     render() {
+        console.log('我是酷我音乐：',this)
         return (
-            <div className='kuwo'>
+            <div id='kuwo'>
                 <div className="song">
                     <div className="name">
                         只要有你陪在我身边
@@ -55,14 +61,22 @@ export default class KugouMusic extends React.Component {
                         170
                     </div>
                 </div>
-                <div className='progressba'></div>
-                <div className="download"></div>
-                <div className='nav-title'></div>
-                <ul className='SingerInfor'>
-
-                </ul>
-                <div className='nav-title-t'></div>
-                <div className='nav-list'></div>
+                <div className="download">
+                    <Button type="default" shape="round" icon={<DownloadOutlined />} size={this.state.size}>
+                        Download
+                    </Button>
+                </div>
+                { /*  <div className='nav-title'>
+                    歌手与专辑
+                </div>
+                <ul className='SingerInfor'> </ul>*/
+                }
+                <div className='nav-title'>
+                    精彩推荐
+                </div>
+                <div className='nav-list'>
+                <Card {...this.props} data={appListData} />
+                </div>
             </div>
         );
     }

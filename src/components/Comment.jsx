@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu, Dropdown, Button, Input, message, Modal } from 'antd';
+import store from '../radux/store.js'
 const { TextArea } = Input;
 
 export default class Comment extends React.Component {
@@ -98,7 +99,7 @@ export default class Comment extends React.Component {
                             </Button>
                             <Button type="primary" onClick={() => {
                                 let newData = this.state.sourceData
-                                newData.new = this.state.displayData;
+                                newData.old.daily = this.state.displayData;
                                 this.setState({
                                     isShowConfirm: false,
                                     sourceData: newData
@@ -307,6 +308,7 @@ export default class Comment extends React.Component {
     }
     render() {
         console.log('我是Comment', this)
+    console.log(store.getState({ type: 'c', data: '1' }));
         return (
             <div className='comment'>
                 {

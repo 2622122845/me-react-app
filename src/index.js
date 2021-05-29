@@ -12,30 +12,33 @@ import Nav from './components/Nav.jsx';
 import Scroll from './components/Scroll';
 import MyDrawer from './components/MyDrawer';
 import { routers } from './route'
+import store from './radux/store.js'
 class Container extends React.Component {
   state = {
     //是否显示
     shouDrawer: false,
     //显示的模板
-    component:null,
+    component: null,
     //模板名字
-    name:''
+    name: ''
   }
-//更新模板
-  changeDrawerState(name,component) {
+  //更新模板
+  changeDrawerState(name, component) {
     this.setState(
       {
         shouDrawer: !this.state.shouDrawer,
-        component:component,
-        name:name
+        component: component,
+        name: name
       }
     )
     return this
   }
   render() {
     console.log(this)
+    let { shouDrawer, component, name, close } = store.getState()
+    console.log(shouDrawer, component, name);
     return (
-      <div>
+      <>
         <div className="header">
           <Top />
           <Nav />
@@ -48,30 +51,29 @@ class Container extends React.Component {
               routers.map((item, index) => {
                 return (
                   <Route key={index}
-                  path={item.path}
-                  //component={item.component}
-                  exact={item.exact}
-                  render={(props) => {
-                    return <item.component routers={item.children}
-                     changeDrawerState={this.changeDrawerState.bind(this)}
+                    path={item.path}
+                    //component={item.component}
+                    exact={item.exact}
+                    render={(props) => {
+                      return <item.component
+                        routers={item.children}
                       />
-                  }}
-                />
+                    }}
+                  />
                 )
               })
             }
           </Switch>
           {/* 抽屉 */}
-          <MyDrawer 
-          shouDrawer={this.state.shouDrawer} 
-          component={this.state.component}
-           changeDrawerState={this.changeDrawerState.bind(this)}
-           name={this.state.name}
-           />
-           {/* 顶部 */}
+          <MyDrawer
+            shouDrawer={shouDrawer}
+            component={component}
+            name={name}
+          />
+          {/* 顶部 */}
           <Scroll />
         </div>
-      </div>
+      </>
     )
   }
 }
@@ -81,4 +83,14 @@ ReactDOM.render(
   </Router>,
   document.getElementById('root')
 );
+store.subscribe(
+  () => {
+    ReactDOM.render(
+      <Router>
+        <Container />
+      </Router>,
+      document.getElementById('root')
+    );
+  }
+)
 reportWebVitals();
